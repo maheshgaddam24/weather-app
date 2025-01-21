@@ -1,0 +1,73 @@
+<div class="weather-app" [ngStyle]="{ 'background-image': 'url(' + backgroundImage + ')'}">
+    <div class="container">
+        <h3 class="brand">Weather</h3>
+        <div>
+            <h1 class="temp">{{temp}}&#176;</h1>
+            <div class="city-time">
+                <h1 class="name">{{name}}</h1>
+                <small>
+                    <span class="time">{{time}}</span>
+                    <span class="date">
+                        {{date}}
+                    </span>
+                </small>
+            </div>
+            <div class="weather">
+                <!-- <span  class="icon">{{icon}}</span> -->
+                <img src={{icon}} class="icon" alt="icon" width="50" height="50" />
+                <span class="condition">{{condition}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="panel">
+        <form [formGroup]="userForm" id="locationInput" (ngSubmit)="onSearch()">
+            <input type="text" class="search" formControlName="searchInput" placeholder="Search Location..." />
+            <button type="submit" class="submit">
+                <i class="fa fa-search"></i>
+            </button>
+        </form>
+
+        <ul class="cities">
+            <li class="city" *ngFor="let city of cities" (click)="fetchWeatherData(city)">{{city}}</li>
+        </ul>
+
+        <ul class="details">
+            <h4>Weather Details</h4>
+            <li>
+                <span>Cloudy</span>
+                <span class="cloud">{{cloud}}%</span>
+            </li>
+            <li>
+                <span>Humidity</span>
+                <span class="humidity">{{humidity}}%</span>
+            </li>
+            <li>
+                <span>Wind</span>
+                <span class="wind">{{wind}}km/h</span>
+            </li>
+        </ul>
+
+        <div class="forecast-container">
+            <button class="arrow left" (click)="prevCard()" [disabled]="currentIndex === 0">
+                &#8592;
+            </button>
+            <div class="forecast-cards">
+                <div class="forecast-card" *ngFor="let day of visibleForecastDays">
+                    <div class="forecast-date">{{ getDay(day.date) }}</div>
+                    <img [src]="day.day.condition.icon" alt="weather icon" />
+                    <div class="forecast-condition">{{ day.day.condition.text }}</div>
+                    <div class="forecast-temp">
+                        <span>Max: {{ day.day.maxtemp_c }}&#176;C</span>
+                        <span>Min: {{ day.day.mintemp_c }}&#176;C</span>
+                    </div>
+                    <!-- <div class="forecast-wind">Wind: {{ day.day.maxwind_kph }} km/h</div> -->
+                </div>
+            </div>
+
+            <button class="arrow right" (click)="nextCard()" [disabled]="currentIndex + 3 >= forecast.length">
+                &#8594;
+            </button>
+        </div>
+
+    </div>
+</div>
